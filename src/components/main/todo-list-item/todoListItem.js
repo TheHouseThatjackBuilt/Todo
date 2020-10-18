@@ -20,11 +20,8 @@ export default class TodoListItem extends Component {
         const { closeTask, editTask } = this;
         let classname;
 
-        if (done) classname = 'completed';
-        else classname = null;
+        done ? classname = 'completed' : classname = null;
 
-        if (edit) classname = 'editing';
-        else classname = null;
         return (
             <li className={classname}>
                 <div className="view">
