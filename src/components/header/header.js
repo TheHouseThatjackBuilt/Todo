@@ -4,7 +4,7 @@ import NewTaskForm from './new-task-form';
 
 const Header = () => {
     return (
-        <header className='Header'>
+        <header className='header'>
             <AppHeader />
             <NewTaskForm />
         </header>

@@ -1,5 +1,4 @@
 import React from "react";
-import './description.css';
 import { formatDistance, subMinutes } from 'date-fns';
 
 const Description = ({ label }) => {
