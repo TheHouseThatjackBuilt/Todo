@@ -2,11 +2,17 @@ import React, { Component } from "react";
 import Description from "../description";
 
 export default class TodoListItem extends Component {
-    state = { done: false, edit: false };
+    state = { complete: false, edit: false };
+
+    classnameFunc = (complete, edit) => {
+        if (complete) return 'completed' ;
+        if (edit) return 'editing' ;
+        return null
+    };
 
     closeTask = () => {
         this.setState(state => {
-            return { done: !state.done }
+            return { complete: !state.complete }
         })
     };
     editTask = () => {
@@ -15,12 +21,10 @@ export default class TodoListItem extends Component {
         })
     };
     render() {
-        const { done, edit } = this.state;
+        const { complete, edit } = this.state;
         let { label, deleteItem } = this.props;
-        const { closeTask, editTask } = this;
-        let classname;
-
-        done ? classname = 'completed' : classname = null;
+        const { closeTask, editTask, classnameFunc } = this;
+        let classname = classnameFunc(complete, edit);
 
         return (
             <li className={classname}>
