@@ -1,13 +1,17 @@
 import React from "react";
 import TodoListItem from "../todo-list-item";
 
-const TodoList = ({todoData, deleteItem}) => {
+const TodoList = ({todoData, deleteItem, toggleDone, onEdit}) => {
+
     const elements = todoData.map(({id, ...items}) => {
         return (
             <TodoListItem
                 {...items}
                 key={id}
-                deleteItem={() => deleteItem(id)}/>
+                deleteItem={() => deleteItem(id)}
+                toggleDone={() => toggleDone(id)}
+                onEdit={() => onEdit(id)}
+            />
         )
     });
     return <ul className='todo-list'>{elements}</ul>;

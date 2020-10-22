@@ -4,12 +4,25 @@ import Header from "../header";
 import Main from "../main";
 
 export default class App extends Component {
-    state = {
-        todoData: [
-            {label: "Eat", classname: 'completed', id: 1},
-            {label: "Drink", classname: null, id: 2},
-            {label: "Relax", id: 3},
-        ]
+    maxId = 1;
+    createTodoItem = label => ({
+        label,
+        done: false,
+        edit: false,
+        id: this.maxId++
+    });
+    toggleProperty = (arr, index, property = null) => {
+        const newData = [...arr];
+        let newItem = newData.find(({ id }) => id === index);
+        newItem[property] ? newItem[property] = false : newItem[property] = true;
+        return newData;
+
+    };
+    onToggleDone = id => {
+        this.setState(({ todoData }) => ({todoData: this.toggleProperty(todoData, id, 'done')}))
+    };
+    onEdit = id => {
+        this.setState(({ todoData }) => ({todoData: this.toggleProperty(todoData, id, 'edit')}))
     };
     deleteItem = index => {
         this.setState(({ todoData }) => {
@@ -19,14 +32,26 @@ export default class App extends Component {
             return { todoData: [...newData] }
         })
     };
+    state = {
+        todoData: [
+            this.createTodoItem('Eat'),
+            this.createTodoItem('Drink'),
+            this.createTodoItem('Relax'),
+        ]
+    };
     render() {
         const { todoData } = this.state;
-        const  { deleteItem } = this;
+        const  { deleteItem, onToggleDone, onEdit } = this;
 
         return (
             <section className='app'>
                 <Header />
-                <Main todoData={todoData} deleteItem={deleteItem} />
+                <Main
+                    todoData={todoData}
+                    deleteItem={deleteItem}
+                    toggleDone={onToggleDone}
+                    onEdit={onEdit}
+                />
             </section>
         )
     }

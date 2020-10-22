@@ -1,41 +1,27 @@
-import React, { Component } from "react";
+import React from "react";
 import Description from "../description";
 
-export default class TodoListItem extends Component {
-    state = { complete: false, edit: false };
-
-    classnameFunc = (complete, edit) => {
+const TodoListItem = ({ label, done, edit, deleteItem, toggleDone, onEdit }) => {
+    const classnameFunc = (complete, editing) => {
         if (complete) return 'completed' ;
-        if (edit) return 'editing' ;
+        if (editing) return 'editing' ;
         return null
     };
+    let classname = classnameFunc(done, edit);
+    return (
+        <li className={classname}>
+            <div className="view">
+                <input type="checkbox" className="toggle" onClick={toggleDone} />
+                <Description label={label} />
+                <button className="icon icon-edit" onClick={onEdit} />
+                <button className="icon icon-destroy" onClick={deleteItem} />
+            </div>
+            <input className={classname === 'editing' ? 'edit' : 'hidden'} />
+        </li>
+    )
+};
+export default TodoListItem;
 
-    closeTask = () => {
-        this.setState(state => {
-            return { complete: !state.complete }
-        })
-    };
-    editTask = () => {
-        this.setState(state => {
-            return { edit: !state.edit }
-        })
-    };
-    render() {
-        const { complete, edit } = this.state;
-        let { label, deleteItem } = this.props;
-        const { closeTask, editTask, classnameFunc } = this;
-        let classname = classnameFunc(complete, edit);
 
-        return (
-            <li className={classname}>
-                <div className="view">
-                    <input type="checkbox" className="toggle" onClick={closeTask} />
-                    <Description label={label} />
-                    <button className="icon icon-edit" onClick={editTask} />
-                    <button className="icon icon-destroy" onClick={deleteItem} />
-                </div>
-                <input className={classname === 'editing' ? 'edit' : 'hidden'} />
-            </li>
-        )
-    }
-}
+
+
