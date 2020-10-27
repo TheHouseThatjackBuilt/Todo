@@ -1,7 +1,7 @@
 import React from "react";
 import TodoListItem from "../todo-list-item";
 
-const TodoList = ({todoData, deleteItem, toggleDone, onEdit}) => {
+const TodoList = ({ todoData, deleteItem, toggleDone, onEdit, editItemLabel }) => {
 
     const elements = todoData.map(({id, ...items}) => {
         return (
@@ -11,6 +11,7 @@ const TodoList = ({todoData, deleteItem, toggleDone, onEdit}) => {
                 deleteItem={() => deleteItem(id)}
                 toggleDone={() => toggleDone(id)}
                 onEdit={() => onEdit(id)}
+                editItemLabel={() => editItemLabel(id)}
             />
         )
     });

@@ -2,7 +2,8 @@ import React from "react";
 import TodoList from "./Todo-list";
 import Footer from "./footer";
 
-const Main = ({todoData, deleteItem, toggleDone, onEdit}) => {
+const Main = ({ todoData, deleteItem, toggleDone, onEdit, editItemLabel,
+                counter, filter, filterHandler, clear }) => {
     return (
         <section className="main">
             <TodoList
@@ -10,8 +11,13 @@ const Main = ({todoData, deleteItem, toggleDone, onEdit}) => {
                 deleteItem={deleteItem}
                 toggleDone={toggleDone}
                 onEdit={onEdit}
+                editItemLabel={editItemLabel}
             />
-            <Footer />
+            <Footer counter={counter}
+                    filter={filter}
+                    filterHandler={filterHandler}
+                    clear={clear}
+            />
         </section>
     )
 };
