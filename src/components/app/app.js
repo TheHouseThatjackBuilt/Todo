@@ -9,7 +9,8 @@ export default class App extends Component {
         label,
         done: false,
         edit: false,
-        id: this.id++
+        id: this.id++,
+        dateCreated: new Date(),
     });
     addItem = label => {
         const newItem = this.createTodoItem(label);
@@ -22,10 +23,12 @@ export default class App extends Component {
         return newData;
     };
     onToggleDone = id => {
-        this.setState(({ todoData }) => ({todoData: this.toggleProperty(todoData, id, 'done')}))
+        this.setState(({ todoData }) =>
+            ({todoData: this.toggleProperty(todoData, id, 'done')}))
     };
     onEdit = id => {
-        this.setState(({ todoData }) => ({todoData: this.toggleProperty(todoData, id, 'edit')}))
+        this.setState(({ todoData }) =>
+            ({todoData: this.toggleProperty(todoData, id, 'edit')}))
     };
     editItemLabel = index => {
         return value => {
@@ -62,7 +65,7 @@ export default class App extends Component {
             const newData = todoData.filter((item) => item.done === false);
             return { todoData: newData }
         })
-    }
+    };
     state = {
         todoData: [
             this.createTodoItem('Eat'),
@@ -73,16 +76,16 @@ export default class App extends Component {
     };
     render() {
         const { todoData, filter } = this.state;
-        const { deleteItem, onToggleDone, onEdit, createTodoItem, addItem,
-                editItemLabel, filterTodoData, filterHandler, clearCompleteItems } = this;
+        const { deleteItem, onToggleDone, onEdit,
+                createTodoItem, addItem, editItemLabel,
+                filterTodoData, filterHandler, clearCompleteItems } = this;
         const completeTask = todoData.filter(el => !el.done).length;
         const show = filterTodoData(todoData, filter);
         return (
             <section className='app'>
                 <Header
                     createItem={createTodoItem}
-                    addItem={addItem}
-                />
+                    addItem={addItem} />
                 <Main
                     todoData={show}
                     deleteItem={deleteItem}
@@ -92,8 +95,7 @@ export default class App extends Component {
                     counter={completeTask}
                     filter={filter}
                     filterHandler={filterHandler}
-                    clear={clearCompleteItems}
-                />
+                    clear={clearCompleteItems} />
             </section>
         )
     }

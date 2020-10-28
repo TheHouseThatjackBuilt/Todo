@@ -1,6 +1,7 @@
 import React from "react";
 import AppHeader from './app-header';
 import NewTaskForm from './new-task-form';
+import PropTypes from 'prop-types';
 
 const Header = ({ addItem, editItemLabel }) => {
     return (
@@ -14,3 +15,8 @@ const Header = ({ addItem, editItemLabel }) => {
     )
 };
 export default Header;
+
+Header.propTypes = {
+    addItem: PropTypes.func,
+    editItemLabel: PropTypes.func
+};
