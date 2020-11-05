@@ -26,7 +26,7 @@ Main.propTypes = {
   onEdit: PropTypes.func.isRequired, // toggle "Edit" property
   editItemLabel: PropTypes.func.isRequired, // edit "label" property on todoData obj
   counter: PropTypes.number.isRequired, // counter items
-  filter: PropTypes.oneOfType([PropTypes.string.isRequired, PropTypes.oneOf([null]).isRequired]).isRequired, // filter for displayed items
+  filter: PropTypes.string.isRequired, // filter for displayed items
   filterHandler: PropTypes.func.isRequired, // handler for filter
   clear: PropTypes.func.isRequired, // clear done-list
 };

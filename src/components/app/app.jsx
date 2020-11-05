@@ -7,8 +7,8 @@ export default class App extends Component {
   id = 0;
 
   state = {
-    todoData: [this.createTodoItem('Eat'), this.createTodoItem('Drink'), this.createTodoItem('Relax')],
-    filter: null,
+    todoData: [],
+    filter: 'all',
   };
 
   createTodoItem = (label) => ({
@@ -16,7 +16,7 @@ export default class App extends Component {
     done: false,
     edit: false,
     id: this.id++,
-    dateCreated: new Date(),
+    dateCreated: Date.now(),
   });
 
   addItem = (label) => {
@@ -33,6 +33,11 @@ export default class App extends Component {
 
   onToggleDone = (id) => {
     this.setState(({ todoData }) => ({ todoData: this.toggleProperty(todoData, id, 'done') }));
+  };
+
+  checkingEditProperty = () => {
+    const { todoData } = this.state;
+    return todoData.filter((element) => element.edit === true);
   };
 
   onEdit = (id) => {
@@ -59,6 +64,8 @@ export default class App extends Component {
 
   filterTodoData = (items, filter) => {
     switch (filter) {
+      case 'all':
+        return items;
       case 'active':
         return items.filter((el) => !el.done);
       case 'completed':

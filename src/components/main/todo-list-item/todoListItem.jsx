@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import Description from '../description';
 
 export default class TodoListItem extends Component {
-  state = { text: '' };
+  state = {
+    // eslint-disable-next-line react/destructuring-assignment
+    text: this.props.label,
+  };
 
   static defaultProps = {
     classnameFunc: (complete, editing) => {
@@ -20,8 +23,8 @@ export default class TodoListItem extends Component {
     deleteItem: PropTypes.func.isRequired, // to remove todoItems
     toggleDone: PropTypes.func.isRequired, // toggle "Done" property
     onEdit: PropTypes.func.isRequired, // toggle "Edit" property
-    editItemLabel: PropTypes.func.isRequired, // etit func
-    dateCreated: PropTypes.shape({ root: PropTypes.string.isRequired }).isRequired, // property from todoData item
+    editItemLabel: PropTypes.func.isRequired, // edit func
+    dateCreated: PropTypes.number.isRequired, // property from todoData item
     classnameFunc: PropTypes.func, // toggle className property on li
   };
 
@@ -52,7 +55,7 @@ export default class TodoListItem extends Component {
           <input type="checkbox" className="toggle" onClick={toggleDone} defaultChecked={done} />
           <Description label={label} dateCreated={dateCreated} />
           <button label="icon-edit" type="button" className="icon icon-edit" onClick={onEdit} />
-          <button label="icon-delete" type="button" className="icon icon-destroy" onClick={deleteItem} />
+          <button label="icon-destroy" type="button" className="icon icon-destroy" onClick={deleteItem} />
         </div>
         <form onSubmit={onSubmitLabel}>
           <input className={classname === 'editing' ? 'edit' : 'hidden'} onChange={onLabelChange} value={text} />

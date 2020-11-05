@@ -9,7 +9,7 @@ export default class Description extends Component {
 
   static propTypes = {
     label: PropTypes.string.isRequired, // property from todoData item
-    dateCreated: PropTypes.shape({ root: PropTypes.string.isRequired }).isRequired, // property from todoData item
+    dateCreated: PropTypes.number.isRequired, // property from todoData item
   };
 
   componentDidMount() {
