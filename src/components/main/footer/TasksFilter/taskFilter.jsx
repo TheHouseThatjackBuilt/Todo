@@ -9,7 +9,7 @@ export default class TaskFilter extends Component {
   ];
 
   static propTypes = {
-    filter: PropTypes.oneOfType([PropTypes.string.isRequired, PropTypes.oneOf([null]).isRequired]).isRequired, // filter for displayed items
+    filter: PropTypes.string.isRequired, // filter for displayed items
     filterHandler: PropTypes.func.isRequired, // handler for filter
   };
 
