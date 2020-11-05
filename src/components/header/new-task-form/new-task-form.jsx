@@ -5,22 +5,22 @@ export default class NewTaskForm extends Component {
   state = {
     label: '',
   };
-  static propTypes = {
-    onLabelChange: PropTypes.func,
-    onSubmitLabel: PropTypes.func,
-  };
-  onLabelChange = (e) => this.setState({ label: e.target.value });
 
-  onSubmitLabel = (e) => {
+  static propTypes = {
+    addItem: PropTypes.func.isRequired,
+  };
+
+  onLabelChange = (event) => this.setState({ label: event.target.value });
+
+  onSubmitLabel = (event) => {
     const { label } = this.state;
     const { addItem } = this.props;
-    e.preventDefault();
+    event.preventDefault();
     if (label.length < 1) return;
     addItem(label);
-    return this.setState({
-      label: '',
-    });
+    this.setState({ label: '' });
   };
+
   render() {
     const { onLabelChange, onSubmitLabel } = this;
     const { label } = this.state;
@@ -34,7 +34,6 @@ export default class NewTaskForm extends Component {
           placeholder="What needs to be done?"
           className="new-todo"
           value={label}
-          autoFocus
         />
       </form>
     );

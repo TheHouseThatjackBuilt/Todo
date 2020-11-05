@@ -7,10 +7,12 @@ export default class TaskFilter extends Component {
     { name: 'active', label: 'Active' },
     { name: 'completed', label: 'Completed' },
   ];
+
   static propTypes = {
-    filter: PropTypes.oneOfType([PropTypes.string.isRequired, PropTypes.oneOf([null]).isRequired]), // filter for displayed items
+    filter: PropTypes.oneOfType([PropTypes.string.isRequired, PropTypes.oneOf([null]).isRequired]).isRequired, // filter for displayed items
     filterHandler: PropTypes.func.isRequired, // handler for filter
   };
+
   render() {
     const { button } = this;
     const { filter, filterHandler } = this.props;
@@ -18,12 +20,7 @@ export default class TaskFilter extends Component {
       const classname = filter === name ? 'selected' : null;
       return (
         <li key={name}>
-          <button
-            type="button"
-            key={name}
-            className={classname}
-            onClick={() => filterHandler(name)}
-          >
+          <button type="button" key={name} className={classname} onClick={() => filterHandler(name)}>
             {label}
           </button>
         </li>

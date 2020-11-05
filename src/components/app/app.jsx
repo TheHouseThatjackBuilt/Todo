@@ -5,6 +5,12 @@ import Main from '../main';
 
 export default class App extends Component {
   id = 0;
+
+  state = {
+    todoData: [this.createTodoItem('Eat'), this.createTodoItem('Drink'), this.createTodoItem('Relax')],
+    filter: null,
+  };
+
   createTodoItem = (label) => ({
     label,
     done: false,
@@ -12,32 +18,36 @@ export default class App extends Component {
     id: this.id++,
     dateCreated: new Date(),
   });
+
   addItem = (label) => {
     const newItem = this.createTodoItem(label);
     this.setState(({ todoData }) => ({ todoData: [...todoData, newItem] }));
   };
+
   toggleProperty = (arr, index, property) => {
     const newData = [...arr];
-    let newItem = newData.find(({ id }) => id === index);
+    const newItem = newData.find(({ id }) => id === index);
     newItem[property] = !newItem[property];
     return newData;
   };
+
   onToggleDone = (id) => {
     this.setState(({ todoData }) => ({ todoData: this.toggleProperty(todoData, id, 'done') }));
   };
+
   onEdit = (id) => {
     this.setState(({ todoData }) => ({ todoData: this.toggleProperty(todoData, id, 'edit') }));
   };
-  editItemLabel = (index) => {
-    return (value) => {
-      this.setState(({ todoData }) => {
-        const newData = [...todoData];
-        let newItem = newData.find(({ id }) => id === index);
-        newItem.label = value;
-        return { todoData: [...newData] };
-      });
-    };
+
+  editItemLabel = (index) => (value) => {
+    this.setState(({ todoData }) => {
+      const newData = [...todoData];
+      const newItem = newData.find(({ id }) => id === index);
+      newItem.label = value;
+      return { todoData: [...newData] };
+    });
   };
+
   deleteItem = (index) => {
     this.setState(({ todoData }) => {
       const newData = [...todoData];
@@ -46,6 +56,7 @@ export default class App extends Component {
       return { todoData: [...newData] };
     });
   };
+
   filterTodoData = (items, filter) => {
     switch (filter) {
       case 'active':
@@ -56,6 +67,7 @@ export default class App extends Component {
         return items;
     }
   };
+
   filterHandler = (filter) => this.setState({ filter });
 
   clearCompleteItems = () => {
@@ -64,17 +76,13 @@ export default class App extends Component {
       return { todoData: newData };
     });
   };
-  state = {
-    todoData: [this.createTodoItem('Eat'), this.createTodoItem('Drink'), this.createTodoItem('Relax')],
-    filter: null,
-  };
+
   render() {
     const { todoData, filter } = this.state;
     const {
       deleteItem,
       onToggleDone,
       onEdit,
-      createTodoItem,
       addItem,
       editItemLabel,
       filterTodoData,

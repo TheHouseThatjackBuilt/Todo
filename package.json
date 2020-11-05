@@ -18,10 +18,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint --ext .jsx .",
-    "lint:fix": "eslint ./src --fix --color",
-    "prettier": "prettier -w ./src"
-
+    "lint": "eslint ./src/**/*.{js,jsx}",
+    "lint:fix": "eslint ./src/**/*.{js,jsx} --fix --color",
+    "format": "prettier  src/**/*.{js,jsx}"
   },
   "eslintConfig": {
     "extends": "react-app"
