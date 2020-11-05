@@ -35,12 +35,15 @@ export default class App extends Component {
     this.setState(({ todoData }) => ({ todoData: this.toggleProperty(todoData, id, 'done') }));
   };
 
-  checkingEditProperty = () => {
+  checkingDoneProperty = (index) => {
     const { todoData } = this.state;
-    return todoData.filter((element) => element.edit === true);
+    return todoData.find(({ id }) => id === index);
   };
 
   onEdit = (id) => {
+    // depricate editing item when property "Done" is true
+    const onDone = this.checkingDoneProperty(id);
+    if (onDone.done) return;
     this.setState(({ todoData }) => ({ todoData: this.toggleProperty(todoData, id, 'edit') }));
   };
 
@@ -79,7 +82,7 @@ export default class App extends Component {
 
   clearCompleteItems = () => {
     this.setState(({ todoData }) => {
-      const newData = todoData.filter((item) => item.done === false);
+      const newData = todoData.filter((item) => !item.done);
       return { todoData: newData };
     });
   };
