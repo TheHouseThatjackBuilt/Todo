@@ -22,11 +22,11 @@
     "plugins": [
         "react"
     ],
-    "rules": {
+    "rules": {      
     "curly": ["error"],
     "max-len": ["error", { "code": 140 }],
     "max-depth": ["warn", 4],    
-    "linebreak-style":  ["error", "windows"],
+    "linebreak-style":  0,
     "id-length": ["warn", { "exceptions": ["i", "j"], "min": 2 }],
     "no-lonely-if": ["error"],
     "no-plusplus": "off",
