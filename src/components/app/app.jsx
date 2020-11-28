@@ -1,72 +1,62 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import './app.css';
 import Header from '../header';
 import Main from '../main';
 
-export default class App extends Component {
-  id = 0;
+const App = () => {
+  const [todoData, setTodoData] = useState([]);
+  const [filter, setFilter] = useState('all');
 
-  state = {
-    todoData: [],
-    filter: 'all',
-  };
-
-  createTodoItem = (label) => ({
+  const createTodoItem = (label) => ({
     label,
     done: false,
     edit: false,
-    id: this.id++,
     dateCreated: Date.now(),
+    id: `${Date.now()}${label}`,
   });
 
-  addItem = (label) => {
-    const newItem = this.createTodoItem(label);
-    this.setState(({ todoData }) => ({ todoData: [...todoData, newItem] }));
+  const addItem = (label) => {
+    const newItem = createTodoItem(label);
+    setTodoData([...todoData, newItem]);
   };
 
-  toggleProperty = (arr, index, property) => {
+  const toggleProperty = (arr, index, property) => {
     const newData = [...arr];
     const newItem = newData.find(({ id }) => id === index);
     newItem[property] = !newItem[property];
     return newData;
   };
 
-  onToggleDone = (id) => {
-    this.setState(({ todoData }) => ({ todoData: this.toggleProperty(todoData, id, 'done') }));
+  const onToggleDone = (id) => {
+    setTodoData(toggleProperty(todoData, id, 'done'));
   };
 
-  checkingDoneProperty = (index) => {
-    const { todoData } = this.state;
-    return todoData.find(({ id }) => id === index);
-  };
+  const checkingDoneProperty = (index) => todoData.find(({ id }) => id === index);
 
-  onEdit = (id) => {
-    // depricate editing item when property "Done" is true
-    const onDone = this.checkingDoneProperty(id);
+  const onEdit = (id) => {
+    const onDone = checkingDoneProperty(id);
     if (onDone.done) return;
-    this.setState(({ todoData }) => ({ todoData: this.toggleProperty(todoData, id, 'edit') }));
+    setTodoData(toggleProperty(todoData, id, 'edit'));
   };
 
-  editItemLabel = (index) => (value) => {
-    this.setState(({ todoData }) => {
-      const newData = [...todoData];
-      const newItem = newData.find(({ id }) => id === index);
-      newItem.label = value;
-      return { todoData: [...newData] };
-    });
+  const editItemLabel = (index) => (value) => {
+    const newData = [...todoData];
+    const newItem = newData.find(({ id }) => id === index);
+    newItem.label = value;
+
+    setTodoData(newData);
   };
 
-  deleteItem = (index) => {
-    this.setState(({ todoData }) => {
-      const newData = [...todoData];
-      const findIndex = newData.findIndex(({ id }) => id === index);
-      newData.splice(findIndex, 1);
-      return { todoData: [...newData] };
-    });
+  const deleteItem = (index) => {
+    const newData = [...todoData];
+    const findIndex = newData.findIndex(({ id }) => id === index);
+    newData.splice(findIndex, 1);
+
+    setTodoData(newData);
   };
 
-  filterTodoData = (items, filter) => {
-    switch (filter) {
+  const filterTodoData = (items, theFilter) => {
+    switch (theFilter) {
       case 'all':
         return items;
       case 'active':
@@ -78,44 +68,31 @@ export default class App extends Component {
     }
   };
 
-  filterHandler = (filter) => this.setState({ filter });
+  const filterHandler = (theFilter) => setFilter(theFilter);
 
-  clearCompleteItems = () => {
-    this.setState(({ todoData }) => {
-      const newData = todoData.filter((item) => !item.done);
-      return { todoData: newData };
-    });
+  const clearCompleteItems = () => {
+    const newData = todoData.filter((item) => !item.done);
+    setTodoData(newData);
   };
+  const completeTask = todoData.filter((el) => !el.done).length;
+  const show = filterTodoData(todoData, filter);
 
-  render() {
-    const { todoData, filter } = this.state;
-    const {
-      deleteItem,
-      onToggleDone,
-      onEdit,
-      addItem,
-      editItemLabel,
-      filterTodoData,
-      filterHandler,
-      clearCompleteItems,
-    } = this;
-    const completeTask = todoData.filter((el) => !el.done).length;
-    const show = filterTodoData(todoData, filter);
-    return (
-      <section className="app">
-        <Header addItem={addItem} />
-        <Main
-          todoData={show}
-          deleteItem={deleteItem}
-          toggleDone={onToggleDone}
-          onEdit={onEdit}
-          editItemLabel={editItemLabel}
-          counter={completeTask}
-          filter={filter}
-          filterHandler={filterHandler}
-          clear={clearCompleteItems}
-        />
-      </section>
-    );
-  }
-}
+  return (
+    <section className="app">
+      <Header addItem={addItem} />
+      <Main
+        todoData={show}
+        deleteItem={deleteItem}
+        toggleDone={onToggleDone}
+        onEdit={onEdit}
+        editItemLabel={editItemLabel}
+        counter={completeTask}
+        filter={filter}
+        filterHandler={filterHandler}
+        clear={clearCompleteItems}
+      />
+    </section>
+  );
+};
+
+export default App;

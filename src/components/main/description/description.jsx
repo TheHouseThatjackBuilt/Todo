@@ -1,48 +1,63 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { formatDistance, subSeconds } from 'date-fns';
-import PropTypes from 'prop-types';
+import Timer from 'timer.js';
+import { string, number } from 'prop-types';
 
-export default class Description extends Component {
-  state = {
-    time: 0,
+import { msToMinutesAndSeconds } from '../../../utils';
+
+const Description = ({ label, dateCreated }) => {
+  const [time, setTime] = useState(0);
+  const [timerSwitcher, setTimerValue] = useState(false);
+  const [timerValue, setTimervalue] = useState(600000);
+
+  const theTimer = useMemo(() => new Timer(), [label]);
+
+  const timerStart = () => setTimerValue(true);
+
+  const timerPause = () => setTimerValue(false);
+
+  const creationTick = () => {
+    setTime((new Date() - dateCreated) / 1000);
   };
 
-  static propTypes = {
-    label: PropTypes.string.isRequired, // property from todoData item
-    dateCreated: PropTypes.number.isRequired, // property from todoData item
+  useEffect(() => {
+    theTimer.start(600).pause();
+    const timerDate = setInterval(() => creationTick(), 1000);
+    return () => clearInterval(timerDate);
+  }, []);
+
+  const timerTick = (ms) => {
+    setTimervalue(ms);
   };
 
-  componentDidMount() {
-    this.timerID = setInterval(() => {
-      this.tick();
-    }, 1000);
-  }
+  useEffect(() => {
+    if (timerSwitcher) theTimer.on('ontick', timerTick).start();
+    if (!timerSwitcher) theTimer.pause();
+    return () => theTimer.pause();
+  }, [timerSwitcher, timerValue]);
 
-  componentWillUnmount() {
-    clearInterval(this.timerID);
-  }
+  return (
+    <label>
+      <span className="title">{label}</span>
+      <span className="description">
+        <button onClick={timerStart} type="button" label="icon-play" className="icon icon-play" />
+        <button onClick={timerPause} type="button" label="icon-pause" className="icon icon-pause" />
+        <time>{msToMinutesAndSeconds(timerValue)}</time>
+      </span>
+      <span className="description">
+        {formatDistance(subSeconds(new Date(), time), new Date(), {
+          includeSeconds: true,
+        })}
+        {' '}
+        ago
+      </span>
+    </label>
+  );
+};
 
-  tick() {
-    const { dateCreated } = this.props;
-    this.setState({
-      time: (new Date() - dateCreated) / 1000,
-    });
-  }
+Description.propTypes = {
+  label: string.isRequired, // property from todoData item
+  dateCreated: number.isRequired, // property from todoData item
+};
 
-  render() {
-    const { label } = this.props;
-    const { time } = this.state;
-    return (
-      <label>
-        <span className="description">{label}</span>
-        <span className="created">
-          {formatDistance(subSeconds(new Date(), time), new Date(), {
-            includeSeconds: true,
-          })}
-          {' '}
-          ago
-        </span>
-      </label>
-    );
-  }
-}
+export default Description;
